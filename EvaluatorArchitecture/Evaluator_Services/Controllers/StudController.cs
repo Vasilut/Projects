@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -30,6 +31,35 @@ namespace Evaluator_Services.Controllers
         {
             IEnumerable<string> rezult = new string[] { "Luci", "Toader3", "Iulica" };
             return rezult;
+        }
+
+        [Route("api/Stud/OpenRandomProcess")]
+        [HttpGet]
+        public string OpenRandomProcess()
+        {
+            string sProcessPath = @"C:\sorta\grase.exe";
+            ProcessStartInfo psiStartInfo = new ProcessStartInfo()
+            {
+                FileName = sProcessPath,
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            };
+            Process proc = new Process()
+            {
+                StartInfo = psiStartInfo
+            };
+
+            string sReturnValue = string.Empty;
+
+            proc.Start();
+            while (!proc.StandardOutput.EndOfStream)
+            {
+                string line = proc.StandardOutput.ReadLine();
+                sReturnValue += (line + Environment.NewLine);
+            }
+
+            return sReturnValue;
         }
 
     }

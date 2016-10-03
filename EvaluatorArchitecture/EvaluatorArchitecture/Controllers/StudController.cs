@@ -35,5 +35,26 @@ namespace EvaluatorArchitecture.Controllers
 
             return View();
         }
+
+        public ActionResult GetExampleSource()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(this.apiMethodsUrl);
+                client.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json")
+                    );
+                HttpResponseMessage response = client.GetAsync("api/Stud/OpenRandomProcess").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    ViewBag.result = response.Content.ReadAsAsync<string>().Result;
+                }
+                else
+                {
+                    ViewBag.result = "Eroare tata";
+                }
+            }
+            return View();
+        }
     }
 }
