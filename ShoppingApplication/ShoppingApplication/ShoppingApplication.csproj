@@ -13,4 +13,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ShoppingApplication.Data\ShoppingApplication.Data.csproj" />
+    <ProjectReference Include="..\ShoppingApplication.Repository\ShoppingApplication.Repository.csproj" />
+  </ItemGroup>
+
 </Project>
