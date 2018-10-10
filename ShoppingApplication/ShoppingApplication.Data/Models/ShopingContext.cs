@@ -10,7 +10,7 @@ namespace ShoppingApplication.Data.Models
         {
         }
 
-        public ShopingContext(DbContextOptions<ShopingContext> options)
+        public ShopingContext(DbContextOptions options)
             : base(options)
         {
         }
@@ -20,17 +20,11 @@ namespace ShoppingApplication.Data.Models
         public virtual DbSet<Vendor> Vendor { get; set; }
         public virtual DbSet<VendorDistrict> VendorDistrict { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=LTP-LUCIANV;Database=Shoping;Trusted_Connection=True;");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<District>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
