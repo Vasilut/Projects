@@ -24,8 +24,7 @@ namespace ShoppingApplication.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(200,Type =typeof(IEnumerable<DistrictDTO>))]
-        public IEnumerable<DistrictDTO> GetDistricts()
+        public JsonResult GetDistricts()
         {
             var allDistricts = _districtRepository.GetAll().ToList();
             var districtDtoList = new List<DistrictDTO>();
@@ -68,7 +67,7 @@ namespace ShoppingApplication.API.Controllers
                 
             }
 
-            return districtDtoList;
+            return Json(districtDtoList);
         }
 
 
