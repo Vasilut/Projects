@@ -20,5 +20,7 @@ namespace ShoppingApplication.Repository.VendorDistrictRepository
         }
 
 
+
+
     }
 }

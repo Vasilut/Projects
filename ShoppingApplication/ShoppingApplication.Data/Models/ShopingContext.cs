@@ -4,12 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ShoppingApplication.Data.Models
 {
-    public partial class ShopingContext : DbContext
+    public class ShopingContext : DbContext
     {
-        public ShopingContext()
-        {
-        }
-
+   
         public ShopingContext(DbContextOptions options)
             : base(options)
         {

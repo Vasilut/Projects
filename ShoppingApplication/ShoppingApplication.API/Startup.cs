@@ -38,7 +38,7 @@ namespace ShoppingApplication.API
 
             //db settings
             services.AddSingleton(Configuration);
-            var connectionString = Configuration.GetConnectionString("ShoppingDatabase");
+            var connectionString = Configuration.GetConnectionString("EvaluatorDatabase");
             services.AddDbContext<ShopingContext>(option => option.UseSqlServer(connectionString));
 
             //inject repo

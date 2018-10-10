@@ -14,14 +14,7 @@ namespace ShoppingApplication
     {
         static void Main(string[] args)
         {
-            var db = new ShopingContext();
-            IDistrictRepository districtRepository = new DistrictRepository(db);
-            IVendorRepository vendorRepository = new VendorRepository(db);
-            IShopRepository shopRepository = new ShopRepository(db);
-
-            var allDistrict = districtRepository.GetAll().ToList();
-
-
+            
             Console.WriteLine("Hello World!");
             Console.ReadLine();
         }
