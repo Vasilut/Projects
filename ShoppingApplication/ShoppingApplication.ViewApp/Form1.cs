@@ -16,16 +16,21 @@ namespace ShoppingApplication.ViewApp
 {
     public partial class Form1 : Form
     {
+        private HttpClientService _httpClientService;
         public Form1()
         {
             InitializeComponent();
-            HttpClientService httpClientService = new HttpClientService();
-            var list = httpClientService.GetDistrict("api/District").Result;
-            dataGridView1.DataSource = new List<DistrictDTO>() { new DistrictDTO { Id = 1, DistrictName = "AAA" } };
+            _httpClientService = new HttpClientService();
 
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        public async void Form1_Load(object sender, EventArgs e)
+        {
+            var list = await _httpClientService.GetDistrict("api/District");
+            dataGridView1.DataSource = list;
+        }
+
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
