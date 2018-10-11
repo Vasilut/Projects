@@ -3,6 +3,7 @@ using ShoppingApplication.ViewApp.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -31,7 +32,7 @@ namespace ShoppingApplication.ViewApp.HttpClientServiceRetriever
         {
             List<DistrictDTO> districtDTOs = new List<DistrictDTO>();
             HttpResponseMessage response = await _client.GetAsync(path);
-            if(response.StatusCode  == System.Net.HttpStatusCode.OK)
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var result = await response.Content.ReadAsStringAsync();
                 districtDTOs = JsonConvert.DeserializeObject<List<DistrictDTO>>(result);
@@ -50,6 +51,18 @@ namespace ShoppingApplication.ViewApp.HttpClientServiceRetriever
                 district = JsonConvert.DeserializeObject<DistrictDTO>(result);
             }
             return district;
+        }
+
+        public async Task<string> DeleteProductAsync(string path)
+        {
+            string message = string.Empty;
+            var response = await _client.DeleteAsync(path);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                message = JsonConvert.DeserializeObject<string>(result);
+            }
+            return message;
         }
     }
 }

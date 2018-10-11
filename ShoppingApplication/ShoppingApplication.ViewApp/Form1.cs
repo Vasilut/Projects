@@ -64,9 +64,42 @@ namespace ShoppingApplication.ViewApp
             }
         }
 
+        private async Task UpdateVendors()
+        {
+            if (dataGridView1.Rows != null && dataGridView1.Rows.Count > 0)
+            {
+                int rowIndex = dataGridView1.CurrentRow.Index;
+                var districtId = dataGridView1.Rows[rowIndex].Cells["Id"].Value;
+                var district = await _httpClientService.GetDistrict($"{DISTRICT_API}/{districtId}");
+                dataGridView3.DataSource = district.Vendors;
+            }
+        }
+
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            //delete vendor
+            int rowIndex = dataGridView3.CurrentRow.Index;
+            var vendorId = Convert.ToInt32(dataGridView3.Rows[rowIndex].Cells["IdVendor"].Value.ToString());
+
+            int rowIndexDistrict = dataGridView1.CurrentRow.Index;
+            var districtId = Convert.ToInt32(dataGridView1.Rows[rowIndexDistrict].Cells["Id"].Value.ToString());
+
+            var response = await _httpClientService.DeleteProductAsync($"{DISTRICT_API}/{vendorId}/{districtId}");
+
+            MessageBox.Show(response.ToString());
+
+            await UpdateVendors();
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //add vendor
         }
     }
 }

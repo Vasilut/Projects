@@ -10,8 +10,10 @@ namespace ShoppingApplication.Repository.VendorDistrictRepository
 {
     public class VendorDistrictRepository : RepositoryBase<VendorDistrict>, IVendorDistrictRepository
     {
+        ShopingContext _db;
         public VendorDistrictRepository(ShopingContext shopingContext) : base(shopingContext)
         {
+            _db = shopingContext;
         }
 
         public override IQueryable<VendorDistrict> GetAll()
@@ -20,7 +22,9 @@ namespace ShoppingApplication.Repository.VendorDistrictRepository
         }
 
 
-
-
+        public VendorDistrict GetItem(int vendorId, int districtId)
+        {
+            return _db.VendorDistrict.Where(vdr => vdr.IdVendor == vendorId && vdr.IdDistrict == districtId).FirstOrDefault();
+        }
     }
 }

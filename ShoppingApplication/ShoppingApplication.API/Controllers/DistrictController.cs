@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingApplication.API.Dtos;
+using ShoppingApplication.API.Utilities;
 using ShoppingApplication.Data.Models;
+using ShoppingApplication.Repository.Interfaces;
 using ShoppingApplication.Repository.Interfaces.District;
 using ShoppingApplication.Repository.Interfaces.Vendors;
 
@@ -17,11 +19,14 @@ namespace ShoppingApplication.API.Controllers
     {
         private IDistrictRepository _districtRepository;
         private IVendorRepository _vendorRepository;
+        private IVendorDistrictRepository _vendorDistrictRepository;
 
-        public DistrictController(IDistrictRepository districtRepository, IVendorRepository vendorRepository)
+        public DistrictController(IDistrictRepository districtRepository, IVendorRepository vendorRepository,
+                                  IVendorDistrictRepository vendorDistrictRepository)
         {
             _districtRepository = districtRepository;
             _vendorRepository = vendorRepository;
+            _vendorDistrictRepository = vendorDistrictRepository;
         }
 
         [HttpGet]
@@ -60,6 +65,20 @@ namespace ShoppingApplication.API.Controllers
             return Json(districtDTO);
 
 
+        }
+
+        [HttpDelete("{vendorId}/{districtId}")]
+        public JsonResult Delete(int vendorId, int districtId)
+        {
+            var vendorDistrict = _vendorDistrictRepository.GetItem(vendorId, districtId);
+            if(vendorDistrict.Status == VendorStatus.Primary.ToString())
+            {
+                return Json("The vendor that you're trying to delete is primary");
+            }
+            _vendorDistrictRepository.Delete(vendorDistrict);
+            _vendorDistrictRepository.SaveChanges();
+
+            return Json("The vendor from that district was deleted!");
         }
 
         private void BuildExtraPropertyForDistrict(District district, ref DistrictDTO dtoDistrict)

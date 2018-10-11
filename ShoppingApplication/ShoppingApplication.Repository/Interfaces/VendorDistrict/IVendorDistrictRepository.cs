@@ -7,5 +7,6 @@ namespace ShoppingApplication.Repository.Interfaces
 {
     public interface IVendorDistrictRepository : IRepositoryBase<VendorDistrict>
     {
+        VendorDistrict GetItem(int vendorId, int districtId);
     }
 }
