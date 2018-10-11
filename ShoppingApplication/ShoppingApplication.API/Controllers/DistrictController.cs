@@ -66,21 +66,7 @@ namespace ShoppingApplication.API.Controllers
 
 
         }
-
-        [HttpDelete("{vendorId}/{districtId}")]
-        public JsonResult Delete(int vendorId, int districtId)
-        {
-            var vendorDistrict = _vendorDistrictRepository.GetItem(vendorId, districtId);
-            if(vendorDistrict.Status == VendorStatus.Primary.ToString())
-            {
-                return Json("The vendor that you're trying to delete is primary");
-            }
-            _vendorDistrictRepository.Delete(vendorDistrict);
-            _vendorDistrictRepository.SaveChanges();
-
-            return Json("The vendor from that district was deleted!");
-        }
-
+        
         private void BuildExtraPropertyForDistrict(District district, ref DistrictDTO dtoDistrict)
         {
             //shops

@@ -18,6 +18,7 @@ namespace ShoppingApplication.ViewApp
     {
         private HttpClientService _httpClientService;
         private const string DISTRICT_API = "api/District";
+        private const string VENDOR_API = "api/Vendor";
         public Form1()
         {
             InitializeComponent();
@@ -89,7 +90,7 @@ namespace ShoppingApplication.ViewApp
             int rowIndexDistrict = dataGridView1.CurrentRow.Index;
             var districtId = Convert.ToInt32(dataGridView1.Rows[rowIndexDistrict].Cells["Id"].Value.ToString());
 
-            var response = await _httpClientService.DeleteProductAsync($"{DISTRICT_API}/{vendorId}/{districtId}");
+            var response = await _httpClientService.DeleteProductAsync($"{VENDOR_API}/{vendorId}/{districtId}");
 
             MessageBox.Show(response.ToString());
 
@@ -100,6 +101,8 @@ namespace ShoppingApplication.ViewApp
         private void button2_Click(object sender, EventArgs e)
         {
             //add vendor
+
+
         }
     }
 }
