@@ -53,10 +53,38 @@ namespace ShoppingApplication.ViewApp.HttpClientServiceRetriever
             return district;
         }
 
+        public async Task<List<VendorDTO>> GetVendor(string path)
+        {
+            List<VendorDTO> vendorDTOs = new List<VendorDTO>();
+            HttpResponseMessage response = await _client.GetAsync(path);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                vendorDTOs = JsonConvert.DeserializeObject<List<VendorDTO>>(result);
+            }
+
+            return vendorDTOs;
+        }
+
+        public async Task<string> CreateProductAsync(string path, VendorDistrictDTO vendorDistrict)
+        {
+            string message = string.Empty;
+            var response = await _client.PostAsJsonAsync(
+                path, vendorDistrict);
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                message = JsonConvert.DeserializeObject<string>(result);
+            }
+            return message;
+        }
+
         public async Task<string> DeleteProductAsync(string path)
         {
             string message = string.Empty;
             var response = await _client.DeleteAsync(path);
+
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var result = await response.Content.ReadAsStringAsync();

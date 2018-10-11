@@ -67,6 +67,7 @@
     <Compile Include="HttpClientServiceRetriever\HttpClientService.cs" />
     <Compile Include="Model\DistrictDTO.cs" />
     <Compile Include="Model\ShopDTO.cs" />
+    <Compile Include="Model\VendorDistrictDTO.cs" />
     <Compile Include="Model\VendorDTO.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

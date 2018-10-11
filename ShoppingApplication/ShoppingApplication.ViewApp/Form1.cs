@@ -98,10 +98,16 @@ namespace ShoppingApplication.ViewApp
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
             //add vendor
+            int rowIndexDistrict = dataGridView1.CurrentRow.Index;
+            var districtId = Convert.ToInt32(dataGridView1.Rows[rowIndexDistrict].Cells["Id"].Value.ToString());
 
+            var lstOfAvailableVendors = await _httpClientService.GetVendor($"{VENDOR_API}/{districtId}");
+
+
+            new AddVendor(_httpClientService, VENDOR_API, districtId, lstOfAvailableVendors).Show();
 
         }
     }
