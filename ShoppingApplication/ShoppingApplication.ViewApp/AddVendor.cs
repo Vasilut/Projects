@@ -18,14 +18,12 @@ namespace ShoppingApplication.ViewApp
         private int districtId;
         private List<VendorDTO> lstOfAvailableVendors;
         private HttpClientService _httpClientService;
-        private string vendorApi;
 
-        
-        public AddVendor(HttpClientService httpClientService, string vendorApi, int districtId, List<VendorDTO> lstOfAvailableVendors)
+
+        public AddVendor(HttpClientService httpClientService, int districtId, List<VendorDTO> lstOfAvailableVendors)
         {
             InitializeComponent();
             _httpClientService = httpClientService;
-            this.vendorApi = vendorApi;
             this.districtId = districtId;
             this.lstOfAvailableVendors = lstOfAvailableVendors;
         }
@@ -43,10 +41,8 @@ namespace ShoppingApplication.ViewApp
         private void AddVendor_Load(object sender, EventArgs e)
         {
             label4.Text = districtId.ToString();
-
             //setting the status
             comboBox1.DataSource = Enum.GetValues(typeof(VendorStatus));
-
             //setting the name of available vendors
             comboBox2.DataSource = lstOfAvailableVendors.Select(x => x.VendorName).ToList();
         }
@@ -67,10 +63,10 @@ namespace ShoppingApplication.ViewApp
                 IdVendor = vendorIdToAddToDistrict
             };
 
-            var response = await _httpClientService.CreateProductAsync($"{vendorApi}", vendorDistrictDTO);
+            var response = await _httpClientService.CreateProductAsync($"{APIRoute.VENDOR_API}", vendorDistrictDTO);
 
             MessageBox.Show(response.ToString());
-
+            this.Close();
         }
     }
 }

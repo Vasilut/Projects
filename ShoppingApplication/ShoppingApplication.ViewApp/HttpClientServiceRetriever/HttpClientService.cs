@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using ShoppingApplication.ViewApp.Model;
+using ShoppingApplication.ViewApp.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace ShoppingApplication.ViewApp.HttpClientServiceRetriever
         private void InitClient()
         {
             _client = new HttpClient();
-            _client.BaseAddress = new Uri("http://localhost:30528/");
+            _client.BaseAddress = new Uri(APIRoute.ApiUrl);
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));

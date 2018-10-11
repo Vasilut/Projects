@@ -71,6 +71,7 @@
     <Compile Include="Model\VendorDTO.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\APIRoute.cs" />
     <Compile Include="Utilities\VendorStatus.cs" />
     <EmbeddedResource Include="AddVendor.resx">
       <DependentUpon>AddVendor.cs</DependentUpon>

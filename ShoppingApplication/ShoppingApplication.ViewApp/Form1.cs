@@ -1,5 +1,6 @@
 ﻿using ShoppingApplication.ViewApp.HttpClientServiceRetriever;
 using ShoppingApplication.ViewApp.Model;
+using ShoppingApplication.ViewApp.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,8 +18,6 @@ namespace ShoppingApplication.ViewApp
     public partial class Form1 : Form
     {
         private HttpClientService _httpClientService;
-        private const string DISTRICT_API = "api/District";
-        private const string VENDOR_API = "api/Vendor";
         public Form1()
         {
             InitializeComponent();
@@ -28,8 +27,10 @@ namespace ShoppingApplication.ViewApp
 
         public async void Form1_Load(object sender, EventArgs e)
         {
+            //get all the districts
             await FillData();
 
+            //when I change the district I update the shops and the vendors
             dataGridView1.CellMouseClick += async (send, args) =>
             {
                 int rowIndex = -1;
@@ -44,7 +45,7 @@ namespace ShoppingApplication.ViewApp
 
         private async Task FillData()
         {
-            var list = await _httpClientService.GetDistricts(DISTRICT_API);
+            var list = await _httpClientService.GetDistricts(APIRoute.DISTRICT_API);
             dataGridView1.DataSource = list;  
             await UpdateShopsAndVendors(0);
         }
@@ -58,7 +59,7 @@ namespace ShoppingApplication.ViewApp
             if(dataGridView1.Rows != null && dataGridView1.Rows.Count > 0)
             {
                 var id = dataGridView1.Rows[index].Cells["Id"].Value;
-                var district = await _httpClientService.GetDistrict($"{DISTRICT_API}/{id}");
+                var district = await _httpClientService.GetDistrict($"{APIRoute.DISTRICT_API}/{id}");
 
                 dataGridView2.DataSource = district.Shops;
                 dataGridView3.DataSource = district.Vendors;
@@ -71,7 +72,7 @@ namespace ShoppingApplication.ViewApp
             {
                 int rowIndex = dataGridView1.CurrentRow.Index;
                 var districtId = dataGridView1.Rows[rowIndex].Cells["Id"].Value;
-                var district = await _httpClientService.GetDistrict($"{DISTRICT_API}/{districtId}");
+                var district = await _httpClientService.GetDistrict($"{APIRoute.DISTRICT_API}/{districtId}");
                 dataGridView3.DataSource = district.Vendors;
             }
         }
@@ -86,14 +87,12 @@ namespace ShoppingApplication.ViewApp
             //delete vendor
             int rowIndex = dataGridView3.CurrentRow.Index;
             var vendorId = Convert.ToInt32(dataGridView3.Rows[rowIndex].Cells["IdVendor"].Value.ToString());
-
             int rowIndexDistrict = dataGridView1.CurrentRow.Index;
             var districtId = Convert.ToInt32(dataGridView1.Rows[rowIndexDistrict].Cells["Id"].Value.ToString());
 
-            var response = await _httpClientService.DeleteProductAsync($"{VENDOR_API}/{vendorId}/{districtId}");
+            var response = await _httpClientService.DeleteProductAsync($"{APIRoute.VENDOR_API}/{vendorId}/{districtId}");
 
             MessageBox.Show(response.ToString());
-
             await UpdateVendors();
 
         }
@@ -103,12 +102,9 @@ namespace ShoppingApplication.ViewApp
             //add vendor
             int rowIndexDistrict = dataGridView1.CurrentRow.Index;
             var districtId = Convert.ToInt32(dataGridView1.Rows[rowIndexDistrict].Cells["Id"].Value.ToString());
-
-            var lstOfAvailableVendors = await _httpClientService.GetVendor($"{VENDOR_API}/{districtId}");
-
-
-            new AddVendor(_httpClientService, VENDOR_API, districtId, lstOfAvailableVendors).Show();
-
+            var lstOfAvailableVendors = await _httpClientService.GetVendor($"{APIRoute.VENDOR_API}/{districtId}");
+            new AddVendor(_httpClientService, districtId, lstOfAvailableVendors).Show();
+            await UpdateVendors();
         }
     }
 }

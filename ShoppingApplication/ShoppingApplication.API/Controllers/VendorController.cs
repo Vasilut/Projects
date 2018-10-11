@@ -32,6 +32,8 @@ namespace ShoppingApplication.API.Controllers
         [HttpDelete("{vendorId}/{districtId}")]
         public JsonResult Delete(int vendorId, int districtId)
         {
+            //delete vendor
+            //we need also the district id to make this operation
             var vendorDistrict = _vendorDistrictRepository.GetItem(vendorId, districtId);
             if (vendorDistrict.Status == VendorStatus.Primary.ToString())
             {
@@ -46,9 +48,11 @@ namespace ShoppingApplication.API.Controllers
         [HttpGet("{districtId}")]
         public JsonResult GetVendors(int districtId)
         {
+            //we get the vendors for a district
+            //then we remove this vendors from all the vendors to see the available (remaining) vendors for a district
+
             var districtToReturn = _districtRepository.GetItem(districtId);
             var lstOfAllVendors = _vendorRepository.GetAll().ToList();
-
             var lstAvailableVendor = new List<VendorDTO>();
 
             //vendors
@@ -72,6 +76,7 @@ namespace ShoppingApplication.API.Controllers
         [HttpPost]
         public JsonResult AddVendor([FromBody] VendorDistrictDTO vendor)
         {
+            //add vendor
             if (ModelState.IsValid)
             {
                 var vendorPrimary = _vendorDistrictRepository.GetAll().Where(vdr => vdr.IdDistrict == vendor.IdDistrict &&

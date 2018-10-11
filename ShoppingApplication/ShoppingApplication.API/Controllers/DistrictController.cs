@@ -32,6 +32,7 @@ namespace ShoppingApplication.API.Controllers
         [HttpGet]
         public JsonResult GetDistricts()
         {
+            //get all the districts
             var allDistricts = _districtRepository.GetAll().ToList();
             var districtDtoList = new List<DistrictDTO>();
 
@@ -51,6 +52,7 @@ namespace ShoppingApplication.API.Controllers
         [HttpGet("{id}")]
         public JsonResult GetDistrict(int id)
         {
+            //get district by id
             var districtToReturn = _districtRepository.GetItem(id);
             if (districtToReturn == null)
             {
@@ -69,6 +71,8 @@ namespace ShoppingApplication.API.Controllers
         
         private void BuildExtraPropertyForDistrict(District district, ref DistrictDTO dtoDistrict)
         {
+            //get shops and vendors for a district
+
             //shops
             if (district.Shops.Count > 0)
             {
