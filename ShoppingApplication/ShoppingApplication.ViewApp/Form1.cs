@@ -28,6 +28,7 @@ namespace ShoppingApplication.ViewApp
         {
             var list = await _httpClientService.GetDistrict("api/District");
             dataGridView1.DataSource = list;
+
         }
 
         private void label1_Click(object sender, EventArgs e)
