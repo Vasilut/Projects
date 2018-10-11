@@ -17,6 +17,7 @@ namespace ShoppingApplication.ViewApp
     public partial class Form1 : Form
     {
         private HttpClientService _httpClientService;
+        private const string DISTRICT_API = "api/District";
         public Form1()
         {
             InitializeComponent();
@@ -26,9 +27,27 @@ namespace ShoppingApplication.ViewApp
 
         public async void Form1_Load(object sender, EventArgs e)
         {
-            var list = await _httpClientService.GetDistrict("api/District");
-            dataGridView1.DataSource = list;
+            await FillData();
+            UpdateShopsAndVendors();
 
+        }
+
+        private async Task FillData()
+        {
+            var list = await _httpClientService.GetDistricts(DISTRICT_API);
+            dataGridView1.DataSource = list;
+        }
+
+        private async Task UpdateShopsAndVendors()
+        {
+            if(dataGridView1.Rows != null && dataGridView1.Rows.Count > 0)
+            {
+                var id = dataGridView1.Rows[0].Cells["Id"].Value;
+                var district = await _httpClientService.GetDistrict($"{DISTRICT_API}/{id}");
+
+                dataGridView2.DataSource = district.Shops;
+                dataGridView3.DataSource = district.Vendors;
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)

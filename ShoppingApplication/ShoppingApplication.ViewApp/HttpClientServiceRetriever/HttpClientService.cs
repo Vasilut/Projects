@@ -27,7 +27,7 @@ namespace ShoppingApplication.ViewApp.HttpClientServiceRetriever
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task<List<DistrictDTO>> GetDistrict(string path)
+        public async Task<List<DistrictDTO>> GetDistricts(string path)
         {
             List<DistrictDTO> districtDTOs = new List<DistrictDTO>();
             HttpResponseMessage response = await _client.GetAsync(path);
@@ -38,6 +38,18 @@ namespace ShoppingApplication.ViewApp.HttpClientServiceRetriever
             }
 
             return districtDTOs;
+        }
+
+        public async Task<DistrictDTO> GetDistrict(string path)
+        {
+            var district = new DistrictDTO();
+            HttpResponseMessage response = await _client.GetAsync(path);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                district = JsonConvert.DeserializeObject<DistrictDTO>(result);
+            }
+            return district;
         }
     }
 }
