@@ -28,21 +28,35 @@ namespace ShoppingApplication.ViewApp
         public async void Form1_Load(object sender, EventArgs e)
         {
             await FillData();
-            UpdateShopsAndVendors();
+
+            dataGridView1.CellMouseClick += async (send, args) =>
+            {
+                int rowIndex = -1;
+                if (dataGridView1.CurrentRow != null)
+                {
+                    rowIndex = dataGridView1.CurrentRow.Index;
+                    await UpdateShopsAndVendors(rowIndex);
+                }
+            };
 
         }
 
         private async Task FillData()
         {
             var list = await _httpClientService.GetDistricts(DISTRICT_API);
-            dataGridView1.DataSource = list;
+            dataGridView1.DataSource = list;  
+            await UpdateShopsAndVendors(0);
         }
 
-        private async Task UpdateShopsAndVendors()
+        private async Task UpdateShopsAndVendors(int index)
         {
+            if(index == -1)
+            {
+                return;
+            }
             if(dataGridView1.Rows != null && dataGridView1.Rows.Count > 0)
             {
-                var id = dataGridView1.Rows[0].Cells["Id"].Value;
+                var id = dataGridView1.Rows[index].Cells["Id"].Value;
                 var district = await _httpClientService.GetDistrict($"{DISTRICT_API}/{id}");
 
                 dataGridView2.DataSource = district.Shops;
